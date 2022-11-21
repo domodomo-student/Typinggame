@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タイピング</title>
+    <style>
+        body{
+            background: #B2DBD5;
+            color: #555555;
+            padding: 20px;
+            text-align: center;
+        }
+        #white-box{
+            background: black;
+            display: inline-block;
+            width: 800px;
+            height: 600px;
+        }
+        menu{
+            text-align: right;
+            margin-top: 0%;
+        }
+        #timer{
+            color: white;
+            text-align: left;
+            font-size: 2rem;
+        }
+        .canvas{
+            color: white;
+            width: 800px;
+            height: 400px;
+        }
+        #counter{
+            text-align: center;
+            font-size: 5rem;
+            margin-top: 90px;;
+        }
+        #text{
+            font-size: 2rem;
+        }
+        #typed{
+            text-align: center;
+            font-size: 2rem;
+            color: grey;
+        }
+        #untyped{
+            text-align: center;
+            font-size: 2rem;
+            color: white;
+        }
+        table{
+            margin-bottom: 300px;
+            font-size: 3rem;
+        }
+        #title{
+            margin-top: 10%;
+            font-size: 5rem;
+            text-align: center;
+        }
+        a:link{
+            color: black;
+        }
+        a:visited{
+            color: black;
+        }
+        a:hover{
+            color: black;
+        }
+        a:active{
+            color: black;
+        }
+        #result{
+            height: 300px; 
+        }
+        #okB{
+            color: white;
+            width: 150px;
+            height: 40px;
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #757575;
+        }
+        #okB:hover{
+            background-color: #a8a8a8;
+        }
+        #startB{
+            color: white;
+            width: 150px;
+            margin-top: auto;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #757575;
+            display:flex;
+            flex-flow: column;
+        }
+        #startB:hover{
+            background-color: #a8a8a8;
+        }
+        #resetB{
+            color: white;
+            width: 150px;
+            margin-top: auto;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #757575;
+            display:flex;
+            flex-flow: column;
+        }
+        #reset:hover{
+            background-color: #a8a8a8;
+        }
+        #settingB{
+            color: white;
+            width: 150px;
+            margin-top: auto;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #757575;
+            display:flex;
+            flex-flow: column;
+        }
+        #settingB:hover{
+            background-color: #a8a8a8;
+        }
+        #expB{
+            color: white;
+            width: 150px;
+            margin-top: auto;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #757575;
+            display:flex;
+            flex-flow: column;
+        }
+        #expB:hover{
+            background-color: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <menu>
+        <a href="file:///Users/hiranokoutarou/Desktop/typing.html">ホーム</a>
+        <a href="file:///Users/hiranokoutarou/Desktop/typing-rule.html">説明</a>
+        <a href="file:///Users/hiranokoutarou/Desktop/typing-rank.html">ランク目安</a>
+    </menu>
+    </div>
+    <div id="white-box">
+            <div class="canvas">
+                <div id="timer"></div>
+                <div id="counter"></div>
+                <div id="title"></div>
+                <div id="explanation">
+                    <h1>＜このゲームの使い方＞</h1>
+                    <h2>
+                        <ul>
+                            <ol>1.スタートボタンを押してゲームスタート！</ol>
+                            <ol>2.カウントダウンが終わったら出てきた言葉のキーを入力して言葉を完成させよう</ol>
+                            <ol>3.終了したら結果画面が出てくるよ！</ol>
+                            <ol>4.ランクの目安も載せてるからぜひ確認してみてね！</ol>
+                        </ul>
+                    </h2>
+                </div>
+                <div id="resultSpace">
+                    <div id="text"></div>
+                    <span id="typed"></span>
+                    <span id="untyped"></span>
+                </div>
+                <div id="buttonArea">
+                    <button id="startB" onclick="start()">スタート</button>
+                    <button id="settingB" onclick="set()">設定</button>
+                    <button id="expB" onclick="exp()">説明</button>
+                </div>
+                <div id="result">
+                    <table align="center" border="1px">
+                        <tr>
+                            <td>ランク</td>
+                            <td id="rankSpace"></td>
+                        </tr>
+                        <tr>
+                            <td>正しく打った回数</td>
+                            <td id="tureTypeSpace"></td>
+                        </tr>
+                        <tr>
+                            <td>平均タイプ数</td>
+                            <td id="typedCountSpace"></td>
+                        </tr>
+                        <tr>
+                            <td>ミスタイプ</td>
+                            <td id="missSpace"></td>
+                        </tr>
+                    </table>
+                </div>
+                <button id="okB" onclick="ok()">OK</button>
+            </div>
+    </div>
+    <script>
+        okB.style.display = "none";
+        explanation.style.display = "none";
+        const music = new Audio("file:///Users/hiranokoutarou/Downloads/short_punch1.mp3");
+        const music2 = new Audio("file:///Users/hiranokoutarou/Downloads/blip02.mp3");
+
+        let rankSpace = document.getElementById("rankSpace");
+        let tureTypeSpace = document.getElementById("tureTypeSpace");
+        let typedCountSpace = document.getElementById("typedCountSpace");
+        let missSpace = document.getElementById("missSpace");
+        let title = document.getElementById("title");
+
+        let timer = document.getElementById("timer");
+        let time = 60;
+        timer.textContent = "残り" + time + "秒";
+
+        let miss = 0;
+        let tureType = 0;
+        let typedCount = 0;
+        let rank = "";
+
+        let counter = document.getElementById("counter");
+        let count = 3;
+
+        let textSpace = document.getElementById("text");
+        let typedSpace = document.getElementById("typed");
+        let untypedSpace = document.getElementById("untyped");
+
+        result.style.display = "none";
+        title.textContent = "タイピングゲーム";
+
+        let typeWord = [
+            "to-sutonoka-sutoseido",
+            "ko-suta-nouenomonnsuta-",
+            "yamaihakikara",
+            "kyoukarabokuha",
+            "majimannji", 
+            "tanakarabotamoti", 
+            "itinitiryuugaku", 
+            "kanariyabaikyakukanariyabaikyaku", 
+            "kaizokuouniorehanaru", 
+            "masuta-itumono", 
+            "nerukohasodatu", 
+            "natuhakorekara", 
+            "eigatopoppuko-nn", 
+            "saitamasaikyou", 
+            "tennsainobita",
+            "kayoukarahayaoki",
+            "oninikanabou",
+            "ametyannageru",
+            "rua-deturu",
+            "nakimusihakemusi",
+            "gorogorokomikku",
+            "tyuutosaiyou",
+            "youtubernokagami",
+            "torimoti",
+            "masukomitakusann",
+            "masukaranurimasukara",
+            "himanakeikann",
+            "gohhonoasagao",
+            "inumoarukebabouniataru",
+            "su-pa-hakka-",
+            "mikeikennennjinia",
+            "bennkeinonakidokoro",
+            "soreikeannpannotoko",
+            "kimetunomaeba",
+            "miseinenninnsyu",
+            "dokusyohadaiji",
+            "minaidetaipinngu",
+            "kateikatumarann",
+            "syokuyokunoaki",
+            "taikonobonnjinn",
+            "fudebakowasureta",
+            "nemurerumorinohime",
+            "bidannsi",
+            "gozennnokoutya",
+            "goemonnburo",
+            "jinnja-e-ru",
+            "pasokonnsyosinnsya",
+            "bakanakaba",
+            "jinnkousui",
+            "hajimetenookatui",
+            "tomodatihyakuninn",
+            "jizokukanounakaihatumokuhyou",
+            "sya-bettomodoki",
+            "toufunokado",
+            "youkaikurokku",
+            "korehaunikamosirenai",
+            "satounogohann",
+            "sarumokikaraotiru",
+            "burakkukigyou",
+            "syougakuseinosakubunn",
+            "basukettogo-ru",
+            "otokohaturaiyo",
+            "mutekinoousama",
+            "kasannkasuisosui",
+            "onnseinyuuryoku",
+            "hinekuredaimyou",
+            "danngoseisaku",
+            "kisikaiseinoitte",
+            "tanakanonakananoka",
+            "sutoronngua-mu",
+            "sukettibukkusu",
+            "nogasazunoisikawa",
+            "kyoukasyokyoukasyuukann",
+            "hifukuwokannrisuru",
+            "hikanndekazehikann",
+            "sinngatakorona",
+            "suikanisio",
+            "bennkyoutanosii",
+            "sinngekinokobito",
+            "saikyoudenndenn",
+            "sakka-denouwokitaeru",
+            "kajibanobaka",
+            "potetofurai",
+            "buresuretto",
+            "syo-tokattowooboeru",
+            "syusekidesotugyou"
+        ];
+        let textWord = [
+            "トーストのカースト制度",
+            "コースターの上のモンスター",
+            "病は気から",
+            "今日から僕は",
+            "マジ卍",
+            "棚からぼたもち",
+            "一日留学",
+            "かなりやばい客カナリヤ売却",
+            "海賊王に俺はなる",
+            "マスターいつもの",
+            "寝る子は育つ",
+            "夏はこれから",
+            "映画とポップコーン",
+            "サイタマ最強",
+            "天才のび太",
+            "火曜から早起き",
+            "鬼に金棒",
+            "飴ちゃんあげる",
+            "ルアーで釣る",
+            "泣き虫は毛虫",
+            "ゴロゴロコミック",
+            "中途採用",
+            "youtuberの鏡",
+            "鳥餅",
+            "マスコミたくさん",
+            "マスカラ塗りますから",
+            "暇な警官",
+            "ゴッホの朝顔",
+            "犬も歩けば棒に当たる",
+            "スーパーハッカー",
+            "未経験エンジニア",
+            "弁慶の泣き所",
+            "それいけアンパン男",
+            "鬼滅の前歯",
+            "未成年飲酒",
+            "読書は大事",
+            "見ないでタイピング",
+            "家庭科つまらん",
+            "食欲の秋",
+            "太鼓の凡人",
+            "筆箱忘れた",
+            "眠れる森の姫",
+            "美男子",
+            "午前の紅茶",
+            "五右衛門風呂",
+            "ジンジャーエール",
+            "パソコン初心者",
+            "馬鹿なかば",
+            "人工水",
+            "初めてのおかつい",
+            "友達百人",
+            "持続可能な開発目標",
+            "シャーベットもどき",
+            "豆腐の角",
+            "妖怪クロック",
+            "これはウニかもしれない",
+            "佐藤のご飯",
+            "猿も木から落ちる",
+            "ブラック企業",
+            "小学生の作文",
+            "バスケットゴール",
+            "男は辛いよ",
+            "無敵の王様",
+            "過酸化水素水",
+            "音声入力",
+            "ひねくれ大名",
+            "団子製作",
+            "起死回生の一手",
+            "田中の中なのか",
+            "ストロングアーム",
+            "スケッチブックス",
+            "逃さずの石川",
+            "教科書強化週間",
+            "被服管理する",
+            "悲観で風邪ひかん",
+            "新型コロナ",
+            "スイカに塩",
+            "勉強楽しい",
+            "進撃の小人",
+            "最強でんでん",
+            "サッカーで脳を鍛える",
+            "火事場のバカ",
+            "ポテトフライ",
+            "ブレスレット",
+            "ショートカットを覚える",
+            "主席で卒業"
+        ]; 
+        function ok(){
+            okB.style.display = "none";
+            result.style.display = "none";
+            buttonArea.style.display = "block";
+            title.textContent = "タイピングゲーム";
+        }
+        function exp(){
+            explanation.style.display = "block";
+        }
+        function rand_num(){
+            let idx = Math.floor(Math.random() * textWord.length) + 1;
+            return [typeWord[idx], textWord[idx], idx];
+        }
+        function update(){
+            typed = "";
+            [untyped, text, idx] = rand_num();
+            typeWord.splice(idx, 1);
+            textWord.splice(idx, 1);
+        }
+        function updateWordSpace(){
+            typedSpace.textContent = typed;
+            untypedSpace.textContent = untyped;
+            textSpace.textContent = text;
+        }
+        function timeCountUp(){
+            typedCount = typedCount / 60;
+            typedCount = Math.round(typedCount * 10) / 10;
+            return typedCount;
+        }
+        function display(){
+            resultSpace.style.display = "block";
+        }
+        function start(){
+            action();
+        }
+        document.addEventListener("keydown", function(e){
+            if(count != 0){
+                return;
+            }
+            typedCount++;
+            if(e.key !== untyped.substring(0, 1) && time !== 0){
+                miss++;
+                music2.currentTime = 0;
+                music2.play();
+            }
+            if(e.key === untyped.substring(0, 1) && time !== 0){
+                tureType++;
+                music.currentTime = 0;
+                music.play();
+                typed += untyped.substring(0, 1);
+                untyped = untyped.substring(1);
+                updateWordSpace();
+                if(untyped === ""){
+                    update();
+                    updateWordSpace();
+                }
+                            
+            }
+        });
+        function action(){
+            if(count === 0){
+                count = 3;
+                setTimeout("display()", 3000);
+                time = 60;
+                timer.textContent = "残り" + time + "秒";
+                update();
+                updateWordSpace();
+            }
+            buttonArea.style.display = "none";
+            title.textContent = "";
+            let a = setInterval(countdown, 1000);
+            counter.textContent = count;
+            function countdown(){
+                count--;
+                counter.textContent = count;
+                if(count === 0){
+                    counter.textContent = "";
+                    clearInterval(a);
+                    let b = setInterval(timedown, 1000);
+                    function timedown(){
+                        time--;
+                        timer.textContent = "残り" + time + "秒";
+                        if(time === 0){
+                            clearInterval(b);
+                            resultSpace.style.display = "none";
+                            result.style.display = "block";
+                            okB.style.display = "block";
+                            missSpace.textContent = miss + "回";
+                            typedCountSpace.textContent = timeCountUp() + "回/秒";
+                            tureTypeSpace.textContent = tureType + "回";
+                            if(tureType <= 99){
+                                rank = "E";
+                            }else if(tureType >= 100 && tureType < 160){
+                                rank = "D";
+                            }else if(tureType >= 160 && tureType < 200){
+                                rank = "C";
+                            }else if(tureType >= 200 && tureType < 300){
+                                rank = "B";
+                            }else if(tureType >= 300 && tureType < 360){
+                                rank = "A";
+                            }else if(tureType >= 360 && tureType < 400){
+                                rank = "S";
+                            }else if(tureType >= 400){
+                                rank = "Z";
+                            }else if(tureType >= 400 && miss === 0){
+                                rank = "GOD";
+                            }else if(tureType > 10000){
+                                rank = "チーター";
+                            }
+                            rankSpace.textContent = rank + "ランク";
+                        }
+                    }
+                    update();
+                    updateWordSpace();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
