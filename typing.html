@@ -55,9 +55,9 @@
             font-size: 3rem;
         }
         #title{
+            text-align: center;
             margin-top: 10%;
             font-size: 5rem;
-            text-align: center;
         }
         a:link{
             color: black;
@@ -138,6 +138,24 @@
         #expB:hover{
             background-color: #a8a8a8;
         }
+        #okB2{
+            color: white;
+            width: 50px;
+            background-color: #757575;
+            display:flex;
+            flex-flow: column;
+            margin-left: 220px;
+        }
+        #okB2:hover{
+            background-color: #a8a8a8;
+        }
+        #explanation{
+            text-align: left;
+            margin-left: 150px;
+        }
+        #header{
+            margin-left: 80px;
+        }
     </style>
 </head>
 <body>
@@ -153,15 +171,14 @@
                 <div id="counter"></div>
                 <div id="title"></div>
                 <div id="explanation">
-                    <h1>＜このゲームの使い方＞</h1>
+                    <h1 id="header">＜このゲームの使い方＞</h1>
                     <h2>
-                        <ul>
-                            <ol>1.スタートボタンを押してゲームスタート！</ol>
-                            <ol>2.カウントダウンが終わったら出てきた言葉のキーを入力して言葉を完成させよう</ol>
-                            <ol>3.終了したら結果画面が出てくるよ！</ol>
-                            <ol>4.ランクの目安も載せてるからぜひ確認してみてね！</ol>
-                        </ul>
+                        1.スタートボタンを押してゲームスタート！<br>
+                        2.出てきた言葉のキーを入力して言葉を完成させよう<br>
+                        3.終了したら結果画面が出てくるよ！<br>
+                        4.ランクの目安も載せてるからぜひ確認してみてね！
                     </h2>
+                    <button id="okB2" onclick="okB2()">OK</button>
                 </div>
                 <div id="resultSpace">
                     <div id="text"></div>
@@ -409,8 +426,13 @@
             buttonArea.style.display = "block";
             title.textContent = "タイピングゲーム";
         }
+        function okB2(){
+            location.reload();
+        }
         function exp(){
             explanation.style.display = "block";
+            title.style.display = "none";
+            buttonArea.style.display = "none";
         }
         function rand_num(){
             let idx = Math.floor(Math.random() * textWord.length) + 1;
